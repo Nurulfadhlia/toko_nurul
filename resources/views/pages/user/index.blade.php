@@ -18,7 +18,7 @@
                         </div>
                         <div class="col-lg-7">
                             <div class="banner-img">
-                                <img class="img-fluid" src="{{ asset('assets/templates/user/img/banner/bannerimg.png') }}" alt="">
+                                <img class="img-fluid" src="{{ asset('assets/templates/user/img/banner/banner-img.png') }}" alt="">
                             </div>
                         </div>
                     </div>
@@ -43,38 +43,123 @@
         </div>
 
         <div class="row">
-            <!-- Single product -->
-            @forelse ($products as $item)
-                <div class="col-lg-3 col-md-6">
-                    <div class="single-product">
-                        <img class="img-fluid" src="{{ asset('images/', $item->images) }}" alt="">
-                        <div class="product-details">
-                            <h6></h6>
-                            <div class="price">
-                                <h6>{{ $item->price}}</h6>
-                            </div>
-                            <div class="prd-bottom">
-                                <a href="#" class="social-info">
-                                    <span class="ti-bag"></span>
-                                    <p class="hover-text">Beli</p>
-                                </a>
-                                <a href="#" class="social-info">
-                                    <span class="lnr lnr-move"></span>
-                                    <p class="hover-text">Detail</p>
-                                </a>
-                            </div>
-                        </div>
+    <!-- single product -->
+    @forelse ($products as $item)
+        <div class="col-lg-3 col-md-6">
+            <div class="single-product">
+                <img class="img-fluid" src="{{ asset('images/' . $item->image) }}" alt="">
+                <div class="product-details">
+                    <h6>{{ $item->name }}</h6>
+                    <div class="price">
+                        <h6>Harga: {{ $item->price }} Points</h6>
+                    </div>
+                    <div class="prd-bottom">
+                        <a class="social-info" href="javascript:void(0);" onclick="confirmPurchase('{{ $item->id }}', '{{ Auth::user()->id }}')">
+                            <span class="ti-bag"></span>
+                            <p class="hover-text">Beli</p>
+                        </a>
+                        <a href="{{ route('user.detail.product', $item->id) }}" class="social-info">
+                            <span class="lnr lnr-move"></span>
+                            <p class="hover-text">Detail</p>
+                        </a>
                     </div>
                 </div>
-            @empty
-                <div class="col-lg-12 col-md-12">
-                    <div class="single-product">
-                        <h3 class="text-center">Tidak ada product</h3>
-                    </div>
-                </div>
-            @endforelse
+            </div>
         </div>
-    </div>
+    @empty
+        <div class="col-lg-12 col-md-12">
+            <div class="single-product">
+                <h3 class="text-center">Tidak ada produk</h3>
+            </div>
+        </div>
+    @endforelse
+</div>
 </section>
-<!-- End product Area -->
+<!-- end product Area -->
+<!-- Start product FlashSale Area -->
+<section class="section_gap">
+    <div class="container">
+        <!-- Section title -->
+        <div class="row justify-content-center">
+            <div class="col-lg-6 text-center">
+                <div class="section-title">
+                    <h1>Latest Flash Sale</h1>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+    <!-- single FlashSale -->
+    @forelse ($flash_sales as $itemFs)
+        <div class="col-lg-3 col-md-6">
+            <div class="single-product">
+                <img class="img-fluid" src="{{ asset('images/' . $itemFs->image) }}" alt="">
+                <div class="product-details">
+                    <h6>{{ $itemFs->name }}</h6>
+                    <div class="price">
+                        <h6><del>{{ $itemFs->original_price }} Points</del></h6>
+                        <h4>{{ $itemFs->diskon_price }} Points</h4>
+                    </div>
+                    <div class="prd-bottom">
+                        <a class="social-info" href="javascript:void(0);"
+                           onclick="confirmPurchaseSale('{{ $itemFs->id }}', '{{ Auth::user()->id }}')">
+                            <span class="ti-bag"></span>
+                            <p class="hover-text">Beli</p>
+                        </a>
+                        <a href="{{ route('user.detailFlash.flash_sale', $itemFs->id) }}" class="social-info">
+                            <span class="lnr lnr-move"></span>
+                            <p class="hover-text">Detail</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @empty
+        <div class="col-lg-12 col-md-12">
+            <div class="single-product">
+                <h3 class="text-center">Tidak ada produk</h3>
+            </div>
+        </div>
+    @endforelse
+</div>
+</section>
+<!-- end product Area -->
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+function confirmPurchase(productId, userId) {
+    Swal.fire({
+        title: 'Apakah Anda yakin?',
+        text: "Anda akan membeli produk ini!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, Beli!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = '/product/purchase/' + productId + '/' + userId;
+        }
+    });
+}
+function confirmPurchaseSale(flash_saleId, userId) {
+    Swal.fire({
+        title: 'Apakah Anda yakin?',
+        text: "Anda akan membeli produk ini!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, Beli!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = '/flashsale/purchaseSale/' + flash_saleId + '/' + userId;
+        }
+    });
+}
+</script>
 @endsection

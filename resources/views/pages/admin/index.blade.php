@@ -46,6 +46,22 @@
                     </div>
                 </div>
             </div>
+            <!-- Card 2: Total Flash Sale -->
+            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                <div class="card card-statistic-1">
+                    <div class="card-icon bg-danger">
+                        <i class="far fa-newspaper"></i>
+                    </div>
+                    <div class="card-wrap">
+                        <div class="card-header">
+                            <h4>Total Flash Sale</h4>
+                        </div>
+                        <div class="card-body">
+                            {{ $flash_sales }}
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- Card 3: Total Distributor -->
             <div class="col-lg-3 col-md-6 col-sm-6 col-12">
                 <div class="card card-statistic-1">
